@@ -36,4 +36,8 @@ The following commands are supported:
 Any other input returns a summary of above commands in the game.  
   
 ## Safety
-Whatever you send to "!Surgeon" in game is intercepted client-side. The chat is NOT sent to the server.
+Whatever you send to "!Surgeon" in game is intercepted client-side. The chat is NOT sent to the server.  
+  
+## Credits  
+Contains code from shape-changer by Spaacecats https://github.com/spaacecats  
+Contains code from relog by wuaw https://github.com/wuaw  
