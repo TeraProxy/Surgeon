@@ -7,7 +7,6 @@ Still releasing because I don't have much time for scripting atm.
   
 # Surgeon  
 A tera-proxy module that is able to change your character's appearance (race, gender, voice, etc.).  
-Includes code from Spaacecats and wuaw.  
   
 ## Usage  
 While in game, open a whisper chat session with "!Surgeon" by typing "/w !surgeon" in chat and hitting the space bar.  
