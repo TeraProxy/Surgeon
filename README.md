@@ -1,7 +1,21 @@
 ## Beta  
 The module is operational but might still contain some bugs/things I want to improve in the future.  
 Still releasing because I don't have much time for scripting atm.  
-  
+## (Added) 
+* After accepting changes to App, Gender, Race, It is saved.
+* Automatically loads the new look whenever you start game.
+* If you have more than one look saved for same character, the first look will be loaded.
+* If you want different look loaded as first, move your desired preset to top in app.json.
+
+## Command
+* Now requires command by pinkipi to load preset.
+* /proxy surgery preset
+* preset starts at 0.
+
+## Notes
+* If you try to load invalid preset (ex. A baraka preset on ninja) YOU WILL CRASH.
+* Anyway have fun. I think it is working but could use more testing #SuperBeta
+
 ## TODO  
 * Find a better method to reload with new look than relogging  
   
