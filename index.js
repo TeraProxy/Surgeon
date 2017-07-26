@@ -1,6 +1,10 @@
 // contains code from shape-changer by Spaacecats https://github.com/spaacecats
 // contains code from relog by wuaw https://github.com/wuaw
 
+const path = require('path'),
+	fs = require('fs'),
+    Command = require('command')
+
 const HEAD_ID = 7000001,
 	GROW_ID = 7000005,
 	THIGH_ID = 7000014,
@@ -17,6 +21,8 @@ const HEAD_ID = 7000001,
 	NOCT_ID = 920
 
 module.exports = function Surgeon(dispatch) {
+    const command = Command(dispatch)
+    
 	let cid = null,
 		player = '',
 		model = -1,
@@ -49,13 +55,46 @@ module.exports = function Surgeon(dispatch) {
 		darkanstate = false,
 		ragstate = false,
 		reapstate = false,
-		noctstate = false
-		
+		noctstate = false,
+        
+        customApp = [],
+        forced,
+        forcedVal,
+        currJob;
+    
+    try {
+		customApp = require('./app.json')
+	}
+	catch(e) {}
+    
+    command.add('surgery', (arg) => {
+        if(arg >= customApp.length) command.message('Invalid Preset. Does not exist.')
+        else {
+            forced = true;
+            forcedVal = arg,
+            currJob = job,
+            command.message('Relogging to change apperance to preset ' + forcedVal + ' in 5 seconds.')
+            setTimeout(function(){ relogByName(player); }, 5000);
+        }
+    });
+    
+
 	// ############# //
 	// ### Magic ### //
 	// ############# //
 	
 	dispatch.hook('S_LOGIN', 2, event => {
+        let index = customApp.findIndex(x => x.name == event.name);
+        
+        if(forced && player == event.name){
+            event.appearance = customApp[forcedVal].app;
+            event.model = getModel(customApp[forcedVal].race, customApp[forcedVal].gender, currJob)
+        }
+        else if(index != -1){
+            event.appearance = customApp[index].app;
+            event.model = getModel(customApp[index].race, customApp[index].gender, customApp[index].job)
+        }
+
 		if(changeme) { 
 			event.appearance = newappearance
 			event.model = getModel(newrace, newgender, job)
@@ -88,6 +127,8 @@ module.exports = function Surgeon(dispatch) {
 		ragstate = false
 		reapstate = false
 		noctstate = false
+        
+        if(forced || index != -1) return true;
 		
 		if(changeme) { 
 			changeme = false
@@ -138,6 +179,15 @@ module.exports = function Surgeon(dispatch) {
 				ok: 1,
 				unk: 0
 			})
+                customApp.push({
+                name: player,
+                race: newrace,
+                gender: event.gender,
+                job: job,
+                app: newappearance
+                })
+                saveCustom();
+            
 			relogByName(player)
 			return false
 		}
@@ -153,6 +203,15 @@ module.exports = function Surgeon(dispatch) {
 				ok: 1,
 				unk: 0
 			})
+                customApp.push({
+                name: player,
+                race: newrace,
+                gender: event.gender,
+                job: job,
+                app: newappearance
+                })
+                saveCustom();
+            
 			relogByName(player)
 			return false
 		}
@@ -168,6 +227,15 @@ module.exports = function Surgeon(dispatch) {
 				ok: 1,
 				unk: 0
 			})
+                customApp.push({
+                name: player,
+                race: newrace,
+                gender: event.gender,
+                job: job,
+                app: newappearance
+                })
+                saveCustom();
+            
 			relogByName(player)
 			return false
 		}
@@ -676,7 +744,10 @@ module.exports = function Surgeon(dispatch) {
 		})
 	}
 	
-	
+    function saveCustom() {
+		fs.writeFileSync(path.join(__dirname, 'app.json'), JSON.stringify(customApp))
+	}
+		
 	
 	
 	
