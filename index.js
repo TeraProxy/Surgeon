@@ -569,7 +569,7 @@ module.exports = function Surgeon(dispatch) {
 		else if (param == 'ice') {
 			shapeid = DCHILL_ID
 			stack = 1
-			if(!(chillstate) applyAppearanceChange(cid, shapeid, stack)
+			if(!chillstate) applyAppearanceChange(cid, shapeid, stack)
 			else removeAppearanceChange(cid, shapeid, stack)
 			chillstate = !chillstate
 		}
