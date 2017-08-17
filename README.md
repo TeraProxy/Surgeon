@@ -1,21 +1,8 @@
 ## Beta  
 The module is operational but might still contain some bugs/things I want to improve in the future.  
 Still releasing because I don't have much time for scripting atm.  
-## (Added) 
-* After accepting changes to App, Gender, Race, It is saved.
-* Automatically loads the new look whenever you start game.
-* If you have more than one look saved for same character, the first look will be loaded.
-* If you want different look loaded as first, move your desired preset to top in app.json.
-
-## Command
-* Now requires command by pinkipi to load preset.
-* /proxy surgery preset
-* preset starts at 0.
-
-## Notes
-* If you try to load invalid preset (ex. A baraka preset on ninja) YOU WILL CRASH.
-* Anyway have fun. I think it is working but could use more testing #SuperBeta
-
+Feel free to fork and improve the code.  
+  
 ## TODO  
 * Find a better method to reload with new look than relogging  
   
@@ -23,35 +10,51 @@ Still releasing because I don't have much time for scripting atm.
 A tera-proxy module that is able to change your character's appearance (race, gender, voice, etc.).  
   
 ## Usage  
-While in game, open a whisper chat session with "!Surgeon" by typing "/w !surgeon" in chat and hitting the space bar.  
+Automatically saves your new look and loads it whenever you start the game.  
+If you have more than one look saved for same character, the first look will be loaded.  
+If you want a different look loaded on startup, move your desired preset to the top in app.json.  
+  
+While in game, open a proxy chat session by typing "/proxy" or "/8" in chat and hitting the space bar.  
 This serves as the script's command interface.  
 The following commands are supported:  
   
-* race - emulates a race change  
-* gender - emulates a gender change  
-* appearance - emulates an appearance change  
-* reset - resets your changes  
-* voice [0-5] - changes your voice pitch, e.g. voice 1  
-* head - switch between big and normal head  
-* height [x] - changes your height to x, default is 0, e.g. height -3  
-* thighs [x] - changes your thighs to x, default is 0, e.g. thighs -3  
-* chest [x] - changes your chest to x, default is 0, e.g. chest -3  
-* marrow - gives you the Marrow Brooch visual effect  
-* darkan - gives you Darkan\'s wings  
-* darkan2 - gives you Darkan\'s wings and Murderous Intent visual effects  
-* ice - gives you Kelsaik\'s ice visual effect  
-* fire - gives you Kelsaik\'s fire visual effect  
-* lachelith - gives you Lachelith\'s debuff visual effect  
-* murderous - gives you the Murderous Intent visual effect  
-* ragnarok - gives you the Ragnarok visual effect  
-* reaping - gives you the Shadow Reaping visual effect  
-* noctenium - gives you the Uncommon Noctenium visual effect  
+* surgeon load [x] - load your saved preset with the number x
+* surgeon race - emulates a race change  
+* surgeon gender - emulates a gender change  
+* surgeon appearance - emulates an appearance change  
+* surgeon reset - resets your changes  
+* surgeon voice [0-5] - changes your voice pitch, e.g. "surgeon voice 1"  
+* surgeon head - switch between big and normal head  
+* surgeon height [x] - changes your height to x, default is 0, e.g. "surgeon height -3"  
+* surgeon thighs [x] - changes your thighs to x, default is 0, e.g. "surgeon thighs -3"  
+* surgeon chest [x] - changes your chest to x, default is 0, e.g. "surgeon chest -3"  
+* surgeon marrow - gives you the Marrow Brooch visual effect  
+* surgeon darkan - gives you Darkan\'s wings  
+* surgeon darkan2 - gives you Darkan\'s wings and Murderous Intent visual effects  
+* surgeon ice - gives you Kelsaik\'s ice visual effect  
+* surgeon fire - gives you Kelsaik\'s fire visual effect  
+* surgeon lachelith - gives you Lachelith\'s debuff visual effect  
+* surgeon murderous - gives you the Murderous Intent visual effect  
+* surgeon ragnarok - gives you the Ragnarok visual effect  
+* surgeon reaping - gives you the Shadow Reaping visual effect  
+* surgeon noctenium - gives you the Uncommon Noctenium visual effect  
   
-Any other input returns a summary of above commands in the game.  
+Any other input, starting with "surgeon", will return a summary of above commands in the chat.  
   
 ## Safety
-Whatever you send to "!Surgeon" in game is intercepted client-side. The chat is NOT sent to the server.  
+Whatever you send to the proxy chat in game is intercepted client-side. The chat is NOT sent to the server.  
+All appearance changes are only visible to your client. Nothing gets changed on the server.  
   
 ## Credits  
 Contains code from shape-changer by Spaacecats https://github.com/spaacecats  
 Contains code from relog by wuaw https://github.com/wuaw  
+  
+## Changelog
+### 0.2.0b
+* [*] Fixed a bug that caused the ragnarok, reaping and noctenium effects to not apply
+* [*] Some code cleanup
+* [*] Full conversion to Pinkie Pie's command module which is now a requirement
+### 0.1.5b
+* [+] Added automated saving and loading of looks (thanks wuaw)
+### 0.1.0b
+* [*] Initial Release

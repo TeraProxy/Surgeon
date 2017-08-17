@@ -21,7 +21,6 @@ const HEAD_ID = 7000001,
 	NOCT_ID = 920
 
 module.exports = function Surgeon(dispatch) {
-    const command = Command(dispatch)
     
 	let cid = null,
 		player = '',
@@ -60,24 +59,12 @@ module.exports = function Surgeon(dispatch) {
         customApp = [],
         forced,
         forcedVal,
-        currJob;
+        currJob
     
     try {
 		customApp = require('./app.json')
 	}
 	catch(e) {}
-    
-    command.add('surgery', (arg) => {
-        if(arg >= customApp.length) command.message('Invalid Preset. Does not exist.')
-        else {
-            forced = true;
-            forcedVal = arg,
-            currJob = job,
-            command.message('Relogging to change apperance to preset ' + forcedVal + ' in 5 seconds.')
-            setTimeout(function(){ relogByName(player); }, 5000);
-        }
-    });
-    
 
 	// ############# //
 	// ### Magic ### //
@@ -516,240 +503,145 @@ module.exports = function Surgeon(dispatch) {
 	// ### Chat Hook ### //
 	// ################# //
 	
-	dispatch.hook('C_WHISPER', 1, (event) => {
-		if(event.target.toUpperCase() === "!surgeon".toUpperCase()) {
-			if (/^<FONT>race?<\/FONT>$/i.test(event.message)) {
-				raceChange()
+	const command = Command(dispatch)
+	command.add('surgeon', (param, number) => {
+		if (param == 'load' && number != null) {
+			if(number >= customApp.length) command.message('Invalid Preset. Does not exist.')
+			else {
+				forced = true
+				forcedVal = arg
+				currJob = job
+				command.message('Relogging to change apperance to preset ' + forcedVal + ' in 5 seconds.')
+				setTimeout(() => { relogByName(player) }, 5000)
 			}
-			else if (/^<FONT>gender?<\/FONT>$/i.test(event.message)) {
-				genderChange()
-			}
-			else if (/^<FONT>appearance?<\/FONT>$/i.test(event.message)) {
-				appearanceChange()
-			}
-			else if (/^<FONT>reset?<\/FONT>$/i.test(event.message)) {
-				resetMe()
-			}
-			else if (cmd = /^<FONT>voice (.+?)<\/FONT>$/i.exec(event.message)) {
-				voice = Number(cmd[1])
-				voiceChange(voice)
-			}
-			else if (/^<FONT>head?<\/FONT>$/i.test(event.message)) {
-				shapeid = HEAD_ID
-				if(headstate === false) {
-					headstate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					headstate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (cmd = /^<FONT>height (.+?)<\/FONT>$/i.exec(event.message)) {
-				shapeid = GROW_ID
-				stack = Number(cmd[1]) + 4
-				if (stack == 4){
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-				else {
-					applyAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (cmd = /^<FONT>thighs (.+?)<\/FONT>$/i.exec(event.message)) {
-				shapeid = THIGH_ID
-				stack = Number(cmd[1]) + 4
-				if (stack == 4){
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-				else {
-					applyAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (cmd = /^<FONT>chest (.+?)<\/FONT>$/i.exec(event.message)) {
-				shapeid = CHEST_ID
-				stack = Number(cmd[1]) + 4
-				if (stack == 4){
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-				else {
-					applyAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>marrow?<\/FONT>$/i.test(event.message)) {
-				shapeid = MARROW_ID
-				if(marrowstate === false) {
-					marrowstate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					marrowstate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>darkan?<\/FONT>$/i.test(event.message)) {
-				shapeid = DARKAN_ID
-				if(darkanstate === false) {
-					darkanstate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					darkanstate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>darkan2?<\/FONT>$/i.test(event.message)) {
-				shapeid = MIWINGS_ID
-				if(miwingstate === false) {
-					miwingstate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					miwingstate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>ice?<\/FONT>$/i.test(event.message)) {
-				shapeid = DCHILL_ID
-				if(chillstate === false) {
-					chillstate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					chillstate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>fire?<\/FONT>$/i.test(event.message)) {
-				shapeid = DFIRE_ID
-				if(firestate === false) {
-					firestate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					firestate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>lachelith?<\/FONT>$/i.test(event.message)) {
-				shapeid = LACHE_ID
-				if(lachestate === false) {
-					lachestate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					lachestate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>murderous?<\/FONT>$/i.test(event.message)) {
-				shapeid = MI_ID
-				if(mistate === false) {
-					mistate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					mistate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>ragnarok?<\/FONT>$/i.test(event.message)) {
-				shapeid = RAG_ID
-				if(mistate === false) {
-					mistate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					mistate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>reaping?<\/FONT>$/i.test(event.message)) {
-				shapeid = REAP_ID
-				if(mistate === false) {
-					mistate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					mistate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else if (/^<FONT>noctenium?<\/FONT>$/i.test(event.message)) {
-				shapeid = NOCT_ID
-				if(mistate === false) {
-					mistate = true
-					stack = 1
-					applyAppearanceChange(cid, shapeid, stack)
-				}	
-				else {
-					mistate = false
-					stack = 1
-					removeAppearanceChange(cid, shapeid, stack)
-				}
-			}
-			else message('Commands:<br>'
-								+ ' "race" (emulates a race change),<br>'
-								+ ' "gender" (emulates a gender change),<br>'
-								+ ' "appearance" (emulates an appearance change),<br>'
-								+ ' "reset" (resets your changes),<br>'
-								+ ' "voice [0-5]" (changes your voice pitch, e.g. voice 1),<br>'
-								+ ' "head" (switch between big and normal head),<br>'
-								+ ' "height [x]" (changes your height to x, default is 0, e.g. height -3),<br>'
-								+ ' "thighs [x]" (changes your thighs to x, default is 0, e.g. thighs -3),<br>'
-								+ ' "chest [x]" (changes your chest to x, default is 0, e.g. chest -3),<br>'
-								+ ' "marrow" (gives you the Marrow Brooch visual effect),<br>'
-								+ ' "darkan" (gives you Darkan\'s wings),<br>'
-								+ ' "darkan2" (gives you Darkan\'s wings and Murderous Intent visual effects),<br>'
-								+ ' "ice" (gives you Kelsaik\'s ice visual effect),<br>'
-								+ ' "fire" (gives you Kelsaik\'s fire visual effect),<br>'
-								+ ' "lachelith" (gives you Lachelith\'s debuff visual effect),<br>'
-								+ ' "murderous" (gives you the Murderous Intent visual effect),<br>'
-								+ ' "ragnarok" (gives you the Ragnarok visual effect),<br>'
-								+ ' "reaping" (gives you the Shadow Reaping visual effect),<br>'
-								+ ' "noctenium" (gives you the Uncommon Noctenium visual effect)'
-						)
-			return false
 		}
+		else if (param == 'race') raceChange()
+		else if (param == 'gender') genderChange()
+		else if (param == 'appearance') appearanceChange()
+		else if (param == 'reset') resetMe()
+		else if (param == 'voice' && number != null) voiceChange(Number(number))
+		else if (param == 'head') {
+			shapeid = HEAD_ID
+			stack = 1
+			if(!headstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			headstate = !headstate
+		}
+		else if (param == 'height' && number != null) {
+			shapeid = GROW_ID
+			stack = Number(number) + 4
+			if(stack == 4) removeAppearanceChange(cid, shapeid, stack)
+			else applyAppearanceChange(cid, shapeid, stack)
+		}
+		else if (param == 'thighs' && number != null) {
+			shapeid = THIGH_ID
+			stack = Number(number) + 4
+			if(stack == 4) removeAppearanceChange(cid, shapeid, stack)
+			else applyAppearanceChange(cid, shapeid, stack)
+		}
+		else if (param == 'chest') {
+			shapeid = CHEST_ID
+			stack = Number(number) + 4
+			if(stack == 4) removeAppearanceChange(cid, shapeid, stack)
+			else applyAppearanceChange(cid, shapeid, stack)
+		}
+		else if (param == 'marrow' && number != null) {
+			shapeid = MARROW_ID
+			stack = 1
+			if(!marrowstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			marrowstate = !marrowstate
+		}
+		else if (param == 'darkan') {
+			shapeid = DARKAN_ID
+			stack = 1
+			if(!darkanstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			darkanstate = !darkanstate
+		}
+		else if (param == 'darkan2') {
+			shapeid = MIWINGS_ID
+			stack = 1
+			if(!miwingstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			miwingstate = !miwingstate
+		}
+		else if (param == 'ice') {
+			shapeid = DCHILL_ID
+			stack = 1
+			if(!(chillstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			chillstate = !chillstate
+		}
+		else if (param == 'fire') {
+			shapeid = DFIRE_ID
+			stack = 1
+			if(!firestate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			firestate = !firestate
+		}
+		else if (param == 'lachelith') {
+			shapeid = LACHE_ID
+			stack = 1
+			if(!lachestate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			lachestate = !lachestate
+		}
+		else if (param == 'murderous') {
+			shapeid = MI_ID
+			stack = 1
+			if(!mistate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			mistate = !mistate
+		}
+		else if (param == 'ragnarok') {
+			shapeid = RAG_ID
+			stack = 1
+			if(!ragstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			ragstate = !ragstate
+		}
+		else if (param == 'reaping') {
+			shapeid = REAP_ID
+			stack = 1
+			if(!reapstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			reapstate = !reapstate
+		}
+		else if (param == 'noctenium') {
+			shapeid = NOCT_ID
+			stack = 1
+			if(!noctstate) applyAppearanceChange(cid, shapeid, stack)
+			else removeAppearanceChange(cid, shapeid, stack)
+			noctstate = !noctstate
+		}
+		else command.message('Commands:<br>'
+								+ ' "surgeon load [x]" (load your saved preset with the number x, e.g. "surgeon load 0"),<br>'
+								+ ' "surgeon race" (emulates a race change),<br>'
+								+ ' "surgeon gender" (emulates a gender change),<br>'
+								+ ' "surgeon appearance" (emulates an appearance change),<br>'
+								+ ' "surgeon reset" (resets your changes),<br>'
+								+ ' "surgeon voice [0-5]" (changes your voice pitch, e.g. "surgeon voice 1"),<br>'
+								+ ' "surgeon head" (switch between big and normal head),<br>'
+								+ ' "surgeon height [x]" (changes your height to x, default is 0, e.g. "surgeon height -3"),<br>'
+								+ ' "surgeon thighs [x]" (changes your thighs to x, default is 0, e.g. "surgeon thighs -3"),<br>'
+								+ ' "surgeon chest [x]" (changes your chest to x, default is 0, e.g. "surgeon chest -3"),<br>'
+								+ ' "surgeon marrow" (gives you the Marrow Brooch visual effect),<br>'
+								+ ' "surgeon darkan" (gives you Darkan\'s wings),<br>'
+								+ ' "surgeon darkan2" (gives you Darkan\'s wings and Murderous Intent visual effects),<br>'
+								+ ' "surgeon ice" (gives you Kelsaik\'s ice visual effect),<br>'
+								+ ' "surgeon fire" (gives you Kelsaik\'s fire visual effect),<br>'
+								+ ' "surgeon lachelith" (gives you Lachelith\'s debuff visual effect),<br>'
+								+ ' "surgeon murderous" (gives you the Murderous Intent visual effect),<br>'
+								+ ' "surgeon ragnarok" (gives you the Ragnarok visual effect),<br>'
+								+ ' "surgeon reaping" (gives you the Shadow Reaping visual effect),<br>'
+								+ ' "surgeon noctenium" (gives you the Uncommon Noctenium visual effect)'
+			)
 	})
 	
-	function message(msg) {
-		dispatch.toClient('S_WHISPER', 1, {
-			player: cid,
-			unk1: 0,
-			gm: 0,
-			unk2: 0,
-			author: '!Surgeon',
-			recipient: player,
-			message: msg
-		})
-	}
-	
-    function saveCustom() {
+	function saveCustom() {
 		fs.writeFileSync(path.join(__dirname, 'app.json'), JSON.stringify(customApp))
 	}
-		
-	
-	
 	
 	// --------------------------------------------- relog by wuaw
 	
