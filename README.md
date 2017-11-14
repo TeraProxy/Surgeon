@@ -1,6 +1,5 @@
-## Beta  
-The module is operational but might still contain some bugs/things I want to improve in the future.  
-Still releasing because I don't have much time for scripting atm.  
+## :heavy_exclamation_mark: Development on hold :heavy_exclamation_mark:
+Development for this module has been put on hold. There are more important projects for me at the moment.
 Feel free to fork and improve the code.  
   
 ## TODO  
