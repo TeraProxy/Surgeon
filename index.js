@@ -1,4 +1,4 @@
-// Version 0.5.0b
+// Version 0.5.1b
 // contains code from shape-changer by Spaacecats https://github.com/spaacecats
 // contains code from relog by wuaw https://github.com/wuaw
 
@@ -95,7 +95,7 @@ module.exports = function Surgeon(dispatch) {
 			event.details2 = Buffer.from(details2, 'hex')
         }
 
-		if(changeme) { 
+		if(changeme && player == event.name) { 
 			event.appearance = require('long').fromString(newappearance)
 			event.model = getModel(newrace, newgender, job)
 			event.details = Buffer.from(newdetails, 'hex')

@@ -48,6 +48,8 @@ Contains code from shape-changer by Spaacecats https://github.com/spaacecats
 Contains code from relog by wuaw https://github.com/wuaw  
   
 ## Changelog
+### 0.5.1b
+* [*] Fixed a bug when changing your race and logging in with a different character
 ### 0.5.0b
 * [*] Fixed handling of appearance information when starting race, gender and appearance changes
 * [+] Added handling and saving of additional character detail bytes
