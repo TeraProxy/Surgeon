@@ -1,6 +1,5 @@
-## :heavy_exclamation_mark: Development on hold :heavy_exclamation_mark:
-Development for this module has been put on hold. There are more important projects for me at the moment.
-Feel free to fork and improve the code.  
+##### :heavy_exclamation_mark: Elin Gunner Patch Info :heavy_exclamation_mark:
+Starting with this patch only a limited number of opcodes are mapped by default and most mods will not work when the update hits. This was necessary to prevent people from using exploits. Please be patient while the required opcodes for this module will be added.
   
 ## TODO  
 * Find a better method to reload with new look than relogging  
@@ -49,6 +48,9 @@ Contains code from shape-changer by Spaacecats https://github.com/spaacecats
 Contains code from relog by wuaw https://github.com/wuaw  
   
 ## Changelog
+### 0.5.0b
+* [*] Fixed handling of appearance information when starting race, gender and appearance changes
+* [+] Added handling and saving of additional character detail bytes
 ### 0.2.0b
 * [*] Fixed a bug that caused the ragnarok, reaping and noctenium effects to not apply
 * [*] Some code cleanup

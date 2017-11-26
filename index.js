@@ -1,3 +1,4 @@
+// Version 0.5.0b
 // contains code from shape-changer by Spaacecats https://github.com/spaacecats
 // contains code from relog by wuaw https://github.com/wuaw
 
@@ -36,7 +37,9 @@ module.exports = function Surgeon(dispatch) {
 		changeme = false,
 		newrace = -1,
 		newgender = -1,
-		newappearance = -1,
+		newappearance = '',
+		newdetails = '',
+		newdetails2 = '',
 		inRaceChange = false,
 		inGenderChange = false,
 		inAppearanceChange = false,
@@ -74,17 +77,29 @@ module.exports = function Surgeon(dispatch) {
         let index = customApp.findIndex(x => x.name == event.name);
         
         if(forced && player == event.name){
-            event.appearance = customApp[forcedVal].app;
+			let app = customApp[forcedVal].app.toString(),
+				details = customApp[forcedVal].details,
+				details2 = customApp[forcedVal].details2
+            event.appearance = require('long').fromString(app);
             event.model = getModel(customApp[forcedVal].race, customApp[forcedVal].gender, currJob)
+			event.details = Buffer.from(details, 'hex')
+			event.details2 = Buffer.from(details2, 'hex')
         }
         else if(index != -1){
-            event.appearance = customApp[index].app;
+			let app = customApp[index].app.toString(),
+				details = customApp[index].details,
+				details2 = customApp[index].details2
+            event.appearance = require('long').fromString(app);
             event.model = getModel(customApp[index].race, customApp[index].gender, customApp[index].job)
+			event.details = Buffer.from(details, 'hex')
+			event.details2 = Buffer.from(details2, 'hex')
         }
 
 		if(changeme) { 
-			event.appearance = newappearance
+			event.appearance = require('long').fromString(newappearance)
 			event.model = getModel(newrace, newgender, job)
+			event.details = Buffer.from(newdetails, 'hex')
+			event.details2 = Buffer.from(newdetails2, 'hex')
 		}
 		
 		({cid, model} = event)
@@ -159,7 +174,9 @@ module.exports = function Surgeon(dispatch) {
 			newrace = event.race
 			if(event.gender == 0) newgender = 2
 			else newgender = event.gender
-			newappearance = event.appearance
+			newappearance = event.appearance.toString()
+			newdetails = event.details.toString('hex')
+			newdetails2 = event.details2.toString('hex')
 			imnotmyself = true
 			changeme = true
 			dispatch.toClient('S_END_CHANGE_USER_APPEARANCE', 1, {
@@ -171,7 +188,9 @@ module.exports = function Surgeon(dispatch) {
                 race: newrace,
                 gender: event.gender,
                 job: job,
-                app: newappearance
+                app: newappearance,
+				details: newdetails,
+				details2: newdetails2
                 })
                 saveCustom();
             
@@ -183,7 +202,9 @@ module.exports = function Surgeon(dispatch) {
 			newrace = event.race
 			if(event.gender == 0) newgender = 2
 			else newgender = event.gender
-			newappearance = event.appearance
+			newappearance = event.appearance.toString()
+			newdetails = event.details.toString('hex')
+			newdetails2 = event.details2.toString('hex')
 			imnotmyself = true
 			changeme = true
 			dispatch.toClient('S_END_CHANGE_USER_APPEARANCE', 1, {
@@ -195,7 +216,9 @@ module.exports = function Surgeon(dispatch) {
                 race: newrace,
                 gender: event.gender,
                 job: job,
-                app: newappearance
+                app: newappearance,
+				details: newdetails,
+				details2: newdetails2
                 })
                 saveCustom();
             
@@ -207,7 +230,9 @@ module.exports = function Surgeon(dispatch) {
 			newrace = event.race
 			if(event.gender == 0) newgender = 2
 			else newgender = event.gender
-			newappearance = event.appearance
+			newappearance = event.appearance.toString()
+			newdetails = event.details.toString('hex')
+			newdetails2 = event.details2.toString('hex')
 			imnotmyself = true
 			changeme = true
 			dispatch.toClient('S_END_CHANGE_USER_APPEARANCE', 1, {
@@ -219,7 +244,9 @@ module.exports = function Surgeon(dispatch) {
                 race: newrace,
                 gender: event.gender,
                 job: job,
-                app: newappearance
+                app: newappearance,
+				details: newdetails,
+				details2: newdetails2
                 })
                 saveCustom();
             
@@ -253,7 +280,7 @@ module.exports = function Surgeon(dispatch) {
 			ring1: 0,
 			ring2: 0,
 			innerwear: logininfo.innerwear,
-			appearance: 0, // logininfo.appearance <- makes the client crash
+			appearance: require('long').fromString(logininfo.appearance.toString()),
 			unk1: 0,
 			unk2: 0,
 			unk3: 0,
@@ -280,8 +307,8 @@ module.exports = function Surgeon(dispatch) {
 			unk24: logininfo.weaponEnchantment, // enchantment
 			unk25: 100,
 			item: 168011, // Race Change Voucher
-			details: logininfo.details,
-			details2: logininfo.details2
+			details: Buffer.from(logininfo.details.toString('hex'), 'hex'),
+			details2: Buffer.from(logininfo.details2.toString('hex'), 'hex')
 		})
 		inRaceChange = true
 	}
@@ -307,7 +334,7 @@ module.exports = function Surgeon(dispatch) {
 			ring1: 0,
 			ring2: 0,
 			innerwear: logininfo.innerwear,
-			appearance: 0, // logininfo.appearance <- makes the client crash
+			appearance: require('long').fromString(logininfo.appearance.toString()),
 			unk1: 0,
 			unk2: 0,
 			unk3: 0,
@@ -334,8 +361,8 @@ module.exports = function Surgeon(dispatch) {
 			unk24: logininfo.weaponEnchantment, // enchantment
 			unk25: 100,
 			item: 168012, // Gender Change Voucher
-			details: logininfo.details,
-			details2: logininfo.details2
+			details: Buffer.from(logininfo.details.toString('hex'), 'hex'),
+			details2: Buffer.from(logininfo.details2.toString('hex'), 'hex')
 		})
 		inGenderChange = true
 	}
@@ -357,7 +384,7 @@ module.exports = function Surgeon(dispatch) {
 			ring1: 0,
 			ring2: 0,
 			innerwear: logininfo.innerwear,
-			appearance: logininfo.appearance,
+			appearance: require('long').fromString(logininfo.appearance.toString()),
 			unk1: 0,
 			unk2: 0,
 			unk3: 0,
@@ -384,8 +411,8 @@ module.exports = function Surgeon(dispatch) {
 			unk24: logininfo.weaponEnchantment, // enchantment
 			unk25: 100,
 			item: 168013, // Appearance Change Voucher
-			details: logininfo.details,
-			details2: logininfo.details2
+			details: Buffer.from(logininfo.details.toString('hex'), 'hex'),
+			details2: Buffer.from(logininfo.details2.toString('hex'), 'hex')
 		})
 		inAppearanceChange = true
 	}
